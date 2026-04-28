@@ -5,6 +5,10 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { QAPanel } from "./qa-panel";
+import { DrawingCanvas } from "./drawing-canvas";
+import { AudioRecorder } from "./audio-recorder";
+import { SessionNudge } from "./session-nudge";
+import { useSessionTimer } from "@/lib/use-session-timer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
@@ -22,19 +26,23 @@ const PEN_COLORS = ["#ef4444", "#3b82f6", "#22c55e", "#f97316", "#8b5cf6", "#1a1
 interface LessonViewerProps {
   lessonId: string;
   profileId: string;
+  topicId: string;
   age: number;
   topicTitle: string;
   status: string;
-  lessonText: string; // flat text for TTS (narrative joined)
+  lessonText: string;
+  activityPrompt: string;
 }
 
 export function LessonViewer({
   lessonId,
   profileId,
+  topicId,
   age,
   topicTitle,
   status: initialStatus,
   lessonText,
+  activityPrompt,
 }: LessonViewerProps) {
   const [status, setStatus] = useState(initialStatus);
   const [numPages, setNumPages] = useState(0);
@@ -48,10 +56,17 @@ export function LessonViewer({
   const [allStrokes, setAllStrokes] = useState<Record<number, Stroke[]>>({});
   const [showQA, setShowQA] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [showDrawing, setShowDrawing] = useState(false);
+  const [showRecorder, setShowRecorder] = useState(false);
+  const [drawingSaved, setDrawingSaved] = useState(false);
+  const [reflectionSaved, setReflectionSaved] = useState(false);
+  const [branchingPersisted, setBranchingPersisted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
   const currentStroke = useRef<{ x: number; y: number }[]>([]);
+
+  const { nudge, dismissNudge } = useSessionTimer();
 
   const pdfUrl = `/api/lessons/${lessonId}/pdf`;
 
@@ -192,6 +207,19 @@ export function LessonViewer({
     setStatus("approved");
   }
 
+  // Persist branching topics the first time the lesson is viewed
+  useEffect(() => {
+    if ((status === "approved" || status === "viewed") && !branchingPersisted) {
+      setBranchingPersisted(true);
+      fetch("/api/topics/branch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lessonId, profileId }),
+      }).catch(() => {});
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
   // Parent approval screen
   if (status === "ready") {
     return (
@@ -257,6 +285,30 @@ export function LessonViewer({
           }`}
         >
           🔊 {speaking ? "Stop" : "Read Aloud"}
+        </button>
+
+        {/* Drawing */}
+        <button
+          onClick={() => setShowDrawing(true)}
+          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
+            drawingSaved
+              ? "bg-green-100 text-green-700 border border-green-200"
+              : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+          }`}
+        >
+          🎨 {drawingSaved ? "Drawn!" : "Activity"}
+        </button>
+
+        {/* Recording */}
+        <button
+          onClick={() => setShowRecorder(true)}
+          className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
+            reflectionSaved
+              ? "bg-green-100 text-green-700 border border-green-200"
+              : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+          }`}
+        >
+          🎤 {reflectionSaved ? "Saved!" : "Tell Me"}
         </button>
 
         {/* Q&A */}
@@ -384,6 +436,40 @@ export function LessonViewer({
           onClose={() => setShowQA(false)}
         />
       )}
+
+      {showDrawing && (
+        <DrawingCanvas
+          profileId={profileId}
+          topicId={topicId}
+          lessonId={lessonId}
+          prompt={activityPrompt}
+          age={age}
+          onSaved={() => {
+            setDrawingSaved(true);
+            setShowDrawing(false);
+          }}
+          onClose={() => setShowDrawing(false)}
+        />
+      )}
+
+      {showRecorder && (
+        <AudioRecorder
+          profileId={profileId}
+          lessonId={lessonId}
+          age={age}
+          onSaved={() => {
+            setReflectionSaved(true);
+            setShowRecorder(false);
+          }}
+          onClose={() => setShowRecorder(false)}
+        />
+      )}
+
+      <SessionNudge
+        nudge={nudge}
+        onDismiss={dismissNudge}
+        onOpenRecorder={() => setShowRecorder(true)}
+      />
     </div>
   );
 }

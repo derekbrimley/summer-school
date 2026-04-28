@@ -46,3 +46,36 @@ export interface LessonJson {
   video_suggestions?: VideoSuggestion[];
   conversation_starters?: string[];
 }
+
+export interface Drawing {
+  id: string;
+  profile_id: string;
+  topic_id: string;
+  lesson_id: string | null;
+  image_url: string;
+  prompt: string;
+  created_at: string;
+}
+
+export interface Reflection {
+  id: string;
+  profile_id: string;
+  lesson_id: string;
+  audio_url: string;
+  duration_sec: number | null;
+  created_at: string;
+}
+
+export interface Photo {
+  id: string;
+  profile_id: string;
+  topic_id: string | null;
+  image_url: string;
+  caption: string | null;
+  created_at: string;
+}
+
+export type WonderBookEntry =
+  | { type: "drawing"; data: Drawing }
+  | { type: "reflection"; data: Reflection }
+  | { type: "photo"; data: Photo };

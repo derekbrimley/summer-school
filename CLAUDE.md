@@ -25,5 +25,6 @@ See docs/BUILD_SPEC.md for full feature specs, data model,
 screen layouts, AI prompts, and build phases.
 
 ## Current Phase
-Phase 1: Foundation — setting up the project skeleton, Supabase
-schema, profile selection, and the lesson generation API route.
+Phase 5: Polish — print-friendly project card view, age-appropriate
+UI polish (larger targets for Holland), session flow refinement,
+bug fixes and performance optimization.

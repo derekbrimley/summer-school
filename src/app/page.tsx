@@ -15,7 +15,7 @@ export default async function Home() {
         {profiles?.map((profile) => (
           <Link
             key={profile.id}
-            href={`/${profile.id}/topics`}
+            href={`/${profile.id}/map`}
             className="flex flex-col items-center justify-center w-48 h-48 rounded-2xl bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-200 hover:border-purple-400 hover:shadow-lg transition-all text-center gap-2"
           >
             <span className="text-5xl">

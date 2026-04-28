@@ -41,14 +41,19 @@ export default async function LessonPage({
     ...content.wonder_questions,
   ].join(" ");
 
+  const activityPrompt =
+    profile.age <= 4 ? content.activity.instructions_4yo : content.activity.instructions_7yo;
+
   return (
     <LessonViewerLoader
       lessonId={lessonId}
       profileId={profileId}
+      topicId={lesson.topic_id}
       age={profile.age}
       topicTitle={topic?.title ?? content.title}
       status={lesson.status}
       lessonText={lessonText}
+      activityPrompt={activityPrompt}
     />
   );
 }

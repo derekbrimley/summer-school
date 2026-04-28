@@ -37,9 +37,15 @@ export default async function TopicsPage({
         <Link href="/" className="text-gray-400 hover:text-gray-600">
           &larr; Back
         </Link>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-3xl font-bold flex-1">
           {profile.name}&apos;s Topics
         </h1>
+        <Link
+          href={`/${profileId}/wonder-book`}
+          className="px-4 py-2 rounded-xl bg-purple-100 text-purple-700 text-sm font-medium hover:bg-purple-200 transition-colors"
+        >
+          📖 Wonder Book
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl w-full">

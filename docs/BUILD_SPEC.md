@@ -801,35 +801,35 @@ Rather than a separate system, nature tie-ins are built into the lesson generati
 ## 10. Build Order
 
 ### Phase 1: Foundation
-- [ ] Set up Next.js project on Vercel
-- [ ] Set up Supabase project (database schema, storage buckets)
-- [ ] Build profile selection screen
-- [ ] Build the lesson generation API route (Claude API call → structured JSON)
-- [ ] Build a minimal lesson viewer (render JSON as HTML, no PDF yet)
-- [ ] Seed 10 starter topics
+- [x] Set up Next.js project on Vercel
+- [x] Set up Supabase project (database schema, storage buckets)
+- [x] Build profile selection screen
+- [x] Build the lesson generation API route (Claude API call → structured JSON)
+- [x] Build a minimal lesson viewer (render JSON as HTML, no PDF yet)
+- [x] Seed 10 starter topics
 
 ### Phase 2: Core Lesson Experience
-- [ ] Integrate @react-pdf/renderer to generate lesson PDFs from JSON
-- [ ] Integrate react-pdf to display lesson PDFs in the app
-- [ ] Build the annotation canvas overlay on PDF pages
-- [ ] Build TTS narration (browser SpeechSynthesis API)
-- [ ] Build the AI Q&A panel (Claude Haiku, 5-question cap)
-- [ ] Build lesson status flow (generating → ready → approved → viewed)
-- [ ] Integrate image sourcing (Unsplash API)
+- [x] Integrate @react-pdf/renderer to generate lesson PDFs from JSON
+- [x] Integrate react-pdf to display lesson PDFs in the app
+- [x] Build the annotation canvas overlay on PDF pages
+- [x] Build TTS narration (browser SpeechSynthesis API)
+- [x] Build the AI Q&A panel (Claude Haiku, 5-question cap)
+- [x] Build lesson status flow (generating → ready → approved → viewed)
+- [x] Integrate image sourcing (Unsplash API)
 
 ### Phase 3: Creation & Wonder Book
-- [ ] Integrate tldraw for freeform drawing activities
-- [ ] Build "Save to Wonder Book" flow (export PNG, store in Supabase)
-- [ ] Build the Wonder Book gallery (by date, by topic, family view)
-- [ ] Build the audio recorder for "Tell Me About It"
-- [ ] Build photo upload for parent
+- [x] Integrate tldraw for freeform drawing activities
+- [x] Build "Save to Wonder Book" flow (export PNG, store in Supabase)
+- [x] Build the Wonder Book gallery (by date, by topic, family view)
+- [x] Build the audio recorder for "Tell Me About It"
+- [x] Build photo upload for parent
 
 ### Phase 4: Curiosity Map & Dashboard
-- [ ] Build the curiosity map (d3-force or vis.js)
-- [ ] Connect branching topics to map (tapping a suggestion creates a new node)
-- [ ] Build the parent dashboard (timeline, conversation starters, stats)
-- [ ] Build "Add Topic" for parent
-- [ ] Implement session timer with soft/gentle/firm nudges
+- [x] Build the curiosity map (SVG force simulation, no external dep)
+- [x] Connect branching topics to map (tapping a suggestion creates a new node)
+- [x] Build the parent dashboard (timeline, conversation starters, stats)
+- [x] Build "Add Topic" for parent
+- [x] Implement session timer with soft/gentle/firm nudges
 
 ### Phase 5: Polish
 - [ ] Print-friendly project card view
