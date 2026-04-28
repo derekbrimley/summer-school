@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { LessonJson } from "@/lib/types";
-import { LessonViewer } from "@/components/lesson-viewer";
+import { LessonViewerLoader } from "@/components/lesson-viewer-loader";
 
 export default async function LessonPage({
   params,
@@ -42,7 +42,7 @@ export default async function LessonPage({
   ].join(" ");
 
   return (
-    <LessonViewer
+    <LessonViewerLoader
       lessonId={lessonId}
       profileId={profileId}
       age={profile.age}

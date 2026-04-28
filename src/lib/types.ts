@@ -2,6 +2,7 @@ export interface LessonNarrativeSection {
   heading: string;
   body: string;
   image_suggestion: string;
+  image_url?: string;
 }
 
 export interface LessonActivity {

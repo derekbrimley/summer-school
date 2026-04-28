@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 export function GenerateLessonButton({
   topicId,
   profileId,
+  label,
 }: {
   topicId: string;
   profileId: string;
+  label?: string;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -46,7 +48,7 @@ export function GenerateLessonButton({
         disabled={loading}
         className="w-full py-2 px-4 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        {loading ? "Generating..." : "Start Lesson"}
+        {loading ? "Generating..." : label ?? "Start Lesson"}
       </button>
       {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>

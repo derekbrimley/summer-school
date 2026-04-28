@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "@/lib/supabase";
 import { buildLessonPrompt, parseLessonResponse } from "@/lib/lesson-prompt";
+import { fetchLessonImages } from "@/lib/unsplash";
 
 const anthropic = new Anthropic();
 
@@ -72,6 +73,17 @@ export async function POST(request: NextRequest) {
     }
 
     const lessonJson = parseLessonResponse(textBlock.text);
+
+    // Fetch Unsplash images for each narrative section
+    const imageSuggestions = lessonJson.narrative.map(
+      (s: { image_suggestion: string }) => s.image_suggestion
+    );
+    const imageUrls = await fetchLessonImages(imageSuggestions);
+    for (let i = 0; i < lessonJson.narrative.length; i++) {
+      if (imageUrls[i]) {
+        lessonJson.narrative[i].image_url = imageUrls[i] ?? undefined;
+      }
+    }
 
     const { error: updateError } = await supabase
       .from("lessons")

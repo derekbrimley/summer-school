@@ -93,6 +93,9 @@ function Page1({ content, age }: { content: LessonJson; age: number }) {
         <View key={i} style={styles.section}>
           <Text style={styles.sectionHeading}>{section.heading}</Text>
           <Text style={styles.body}>{section.body}</Text>
+          {section.image_url && (
+            <Image src={section.image_url} style={styles.heroImage} />
+          )}
         </View>
       ))}
 
