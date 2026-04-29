@@ -11,7 +11,7 @@ export default async function TopicsPage({
 
   const [{ data: profile }, { data: topics }, { data: lessons }] = await Promise.all([
     supabase.from("profiles").select("name").eq("id", profileId).single(),
-    supabase.from("topics").select("id, title, description").order("created_at"),
+    supabase.from("topics").select("id, title, description").eq("approved", true).order("created_at"),
     supabase
       .from("lessons")
       .select("id, topic_id, status, created_at")

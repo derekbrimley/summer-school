@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
           description: branch.teaser,
           parent_topic: lesson.topic_id,
           source: "ai_suggested",
+          approved: false,
         })
         .select("id")
         .single();

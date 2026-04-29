@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     { data: connectionsRaw },
     { data: lessonsRaw },
   ] = await Promise.all([
-    supabase.from("topics").select("id, title, description, source").order("created_at"),
+    supabase.from("topics").select("id, title, description, source").eq("approved", true).order("created_at"),
     supabase.from("topic_connections").select("from_topic, to_topic, label"),
     supabase
       .from("lessons")

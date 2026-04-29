@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
-  const { title, description, profileId, source } = await request.json();
+  const { title, description, profileId, source, guidance_notes, reference_material } = await request.json();
 
   if (!title?.trim()) {
     return NextResponse.json({ error: "title is required" }, { status: 400 });
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
   const supabase = getSupabaseAdmin();
 
-  type TopicRow = { id: string; title: string; description: string | null; source: string };
+  type TopicRow = { id: string; title: string; description: string | null; source: string; guidance_notes: string | null; reference_material: string | null };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: topicRaw, error } = await (supabase as any)
@@ -19,8 +19,11 @@ export async function POST(request: NextRequest) {
       title: title.trim(),
       description: description?.trim() ?? null,
       source: source ?? "parent_added",
+      guidance_notes: guidance_notes?.trim() ?? null,
+      reference_material: reference_material?.trim() ?? null,
+      approved: true,
     })
-    .select("id, title, description, source")
+    .select("id, title, description, source, guidance_notes, reference_material")
     .single();
 
   const topic = topicRaw as TopicRow | null;

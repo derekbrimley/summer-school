@@ -47,7 +47,8 @@ const LESSON_JSON_SCHEMA = JSON.stringify({
 export function buildLessonPrompt(
   topic: string,
   childName: string,
-  age: number
+  age: number,
+  options?: { guidanceNotes?: string | null; referenceMaterial?: string | null }
 ): { system: string; user: string } {
   const system = `You are a lesson generator for WonderPath, a children's exploration app.
 
@@ -91,7 +92,15 @@ WHERE RELEVANT, include a "Go Find It" suggestion in the project_card wonder_que
 Respond ONLY with a valid JSON object matching this schema:
 ${LESSON_JSON_SCHEMA}`;
 
-  const user = `Generate a lesson about "${topic}".`;
+  let user = `Generate a lesson about "${topic}".`;
+
+  if (options?.guidanceNotes) {
+    user += `\n\nPARENT GUIDANCE (follow these directions carefully — the parent has specific preferences for how this topic should be taught):\n${options.guidanceNotes}`;
+  }
+
+  if (options?.referenceMaterial) {
+    user += `\n\nREFERENCE MATERIAL (use this as your primary factual source — restructure it into the WonderPath lesson format with age-appropriate language, but draw your content from this material rather than general knowledge):\n${options.referenceMaterial}`;
+  }
 
   return { system, user };
 }

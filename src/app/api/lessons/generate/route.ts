@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
   const { data: topic, error: topicError } = await supabase
     .from("topics")
-    .select("title")
+    .select("title, guidance_notes, reference_material")
     .eq("id", topicId)
     .single();
 
@@ -56,7 +56,11 @@ export async function POST(request: NextRequest) {
   const { system, user } = buildLessonPrompt(
     topic.title,
     profile.name,
-    profile.age
+    profile.age,
+    {
+      guidanceNotes: topic.guidance_notes,
+      referenceMaterial: topic.reference_material,
+    }
   );
 
   try {
