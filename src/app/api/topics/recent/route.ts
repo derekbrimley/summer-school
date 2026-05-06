@@ -19,13 +19,12 @@ export async function GET() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const supabase = getSupabaseAdmin() as any;
 
-  // Fetch recent approved topics
+  // Fetch recent topics (all topics are valid)
   const { data: topicsRaw, error: topicsError } = await supabase
     .from("topics")
     .select("id, title, description, guidance_notes")
-    .eq("approved", true)
     .order("created_at", { ascending: false })
-    .limit(5);
+    .limit(10);
 
   if (topicsError) {
     return NextResponse.json({ error: topicsError.message }, { status: 500 });
@@ -41,13 +40,13 @@ export async function GET() {
     });
   }
 
-  // Try to find a topic with a ready lesson that has content
+  // Try to find a topic with a ready or approved lesson that has content
   for (const topic of topics) {
     const { data: lessonsRaw } = await supabase
       .from("lessons")
       .select("id, topic_id, status, lesson_json")
       .eq("topic_id", topic.id)
-      .eq("status", "ready")
+      .in("status", ["ready", "approved"])
       .not("lesson_json", "is", null)
       .order("created_at", { ascending: false })
       .limit(1);
