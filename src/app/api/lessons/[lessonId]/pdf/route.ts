@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer, DocumentProps } from "@react-pdf/renderer";
 import React from "react";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { LessonDocument } from "@/lib/lesson-pdf";
 import { LessonJson } from "@/lib/types";
 
@@ -10,6 +10,7 @@ export async function GET(
   { params }: { params: Promise<{ lessonId: string }> }
 ) {
   const { lessonId } = await params;
+  const supabase = getSupabaseAdmin() as any;
 
   const { data: lesson } = await supabase
     .from("lessons")

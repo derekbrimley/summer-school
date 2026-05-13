@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { WonderBookGallery } from "@/components/wonder-book-gallery";
 
 export default async function WonderBookPage({
@@ -7,6 +7,7 @@ export default async function WonderBookPage({
   params: Promise<{ profileId: string }>;
 }) {
   const { profileId } = await params;
+  const supabase = getSupabaseAdmin() as any;
 
   const [{ data: profile }, { data: profiles }, { data: topics }] =
     await Promise.all([

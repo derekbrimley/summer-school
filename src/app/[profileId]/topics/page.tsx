@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { GenerateLessonButton } from "./generate-lesson-button";
 
 export default async function TopicsPage({
@@ -8,6 +8,7 @@ export default async function TopicsPage({
   params: Promise<{ profileId: string }>;
 }) {
   const { profileId } = await params;
+  const supabase = getSupabaseAdmin() as any;
 
   const [{ data: profile }, { data: topics }, { data: lessons }] = await Promise.all([
     supabase.from("profiles").select("name").eq("id", profileId).single(),
@@ -49,7 +50,7 @@ export default async function TopicsPage({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl w-full">
-        {topics?.map((topic) => {
+        {topics?.map((topic: any) => {
           const existing = lessonByTopic.get(topic.id);
           return (
             <div

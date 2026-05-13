@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { LessonJson } from "@/lib/types";
 
 const anthropic = new Anthropic();
@@ -15,6 +15,8 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+
+  const supabase = getSupabaseAdmin() as any;
 
   const [{ data: lesson }, { data: profile }] = await Promise.all([
     supabase

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export default async function Home() {
+  const supabase = getSupabaseAdmin() as any;
   const { data: profiles } = await supabase
     .from("profiles")
     .select("id, name, age")
@@ -12,7 +13,7 @@ export default async function Home() {
       <h1 className="text-4xl font-bold tracking-tight">WonderPath</h1>
 
       <div className="flex gap-8">
-        {profiles?.map((profile) => (
+        {profiles?.map((profile: any) => (
           <Link
             key={profile.id}
             href={`/${profile.id}/map`}

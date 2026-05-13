@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { CuriosityMap } from "@/components/curiosity-map";
 
 export default async function MapPage({
@@ -8,6 +8,7 @@ export default async function MapPage({
   params: Promise<{ profileId: string }>;
 }) {
   const { profileId } = await params;
+  const supabase = getSupabaseAdmin() as any;
 
   const { data: profile } = await supabase
     .from("profiles")

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { ParentDashboardClient } from "./parent-dashboard-client";
 
 export default async function ParentPage() {
+  const supabase = getSupabaseAdmin() as any;
   const { data: profiles } = await supabase
     .from("profiles")
     .select("id, name, age")

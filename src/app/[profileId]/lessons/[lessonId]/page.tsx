@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { LessonJson } from "@/lib/types";
 import { LessonViewerLoader } from "@/components/lesson-viewer-loader";
 
@@ -8,6 +8,7 @@ export default async function LessonPage({
   params: Promise<{ profileId: string; lessonId: string }>;
 }) {
   const { profileId, lessonId } = await params;
+  const supabase = getSupabaseAdmin() as any;
 
   const [{ data: lesson }, { data: profile }] = await Promise.all([
     supabase

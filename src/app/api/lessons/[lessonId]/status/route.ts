@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ lessonId: string }> }
 ) {
   const { lessonId } = await params;
+  const supabase = getSupabaseAdmin() as any;
   const { status } = await req.json();
 
   if (!["approved", "viewed"].includes(status)) {

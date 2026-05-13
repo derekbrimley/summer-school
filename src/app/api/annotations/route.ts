@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
+  const supabase = getSupabaseAdmin() as any;
   const { lessonId, profileId, pageNumber, strokeData } = await req.json();
 
   if (!lessonId || !profileId || pageNumber == null) {
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const supabase = getSupabaseAdmin() as any;
   const url = new URL(req.url);
   const lessonId = url.searchParams.get("lessonId");
   const profileId = url.searchParams.get("profileId");
